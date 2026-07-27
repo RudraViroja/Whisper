@@ -1,9 +1,22 @@
 import mongoose, {Schema, Document, Mongoose} from "mongoose";
 
+//Mongoose is an ODM (Object Data Modeling) library.
+
+// JavaScript/TypeScript code
+//     ↓
+//   Mongoose
+//     ↓
+//  MongoDB Database
+
+//Instead of writing raw MongoDB commands, you work with JavaScript objects.
+
 export interface Message extends Document{
     content: string;
     createdAt: Date;
 }
+
+// An interface is a TypeScript feature, It describes
+// "An object should contain these properties."
 
 const MessageSchema: Schema<Message> = new Schema({
     content: {
@@ -16,6 +29,10 @@ const MessageSchema: Schema<Message> = new Schema({
         default: Date.now
     }
 })
+
+// Now you're telling MongoDB
+
+// Store Messages like this.
 
 export interface User extends Document{
     userName: string;
@@ -65,4 +82,22 @@ const UserSchema: Schema<User> = new Schema({
 
 const UserModel = (mongoose.models.User as mongoose.Model<User>) || (mongoose.model<User>("User", UserSchema))
 
+// mongoose.model<User>(ModelName,Schema)
+// this stores User documents
+
 export default UserModel;
+
+// This is one of the most confusing lines for beginners.
+// Let's simplify it. Normally you'd write:
+
+// const UserModel = mongoose.model("User", UserSchema);
+
+// That works in a regular Node.js app.
+// Why isn't that enough in Next.js?
+
+// Next.js reloads files during development. If the file runs again, mongoose.model("User", UserSchema) tries to create the same model a second time.
+
+// That causes an error like:
+
+// OverwriteModelError:
+// Cannot overwrite `User` model once compiled.
