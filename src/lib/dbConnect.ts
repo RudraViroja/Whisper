@@ -38,12 +38,6 @@ async function dbConnect(): Promise<void>{
         // The returned Mongoose instance is stored in db.
         const db = await mongoose.connect(process.env.MONGODB_URI || '', {})
 
-        // Prints the returned Mongoose instance for debugging.
-        console.log(db)
-
-        // Prints the array of connections maintained by Mongoose.
-        console.log(db.connections)
-
         // Accesses the first connection and reads its readyState.
         // Stores that numeric state in our connection object.
         // readyState: 0 = disconnected, 1 = connected,
@@ -56,11 +50,11 @@ async function dbConnect(): Promise<void>{
     } catch (error) {
 
         // Prints a message if the connection attempt fails.
-        console.log("DB connection failed")
-
-        // Terminates the Node.js process with exit code 1,
-        // indicating that the process is exiting because of a failure.
-        process.exit(1)
+            console.error(
+                "DB connection failed:",
+                error instanceof Error ? error.message : "Unknown error"
+            )
+            throw error
     }
 }
 

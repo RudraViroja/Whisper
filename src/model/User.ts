@@ -35,7 +35,7 @@ const MessageSchema: Schema<Message> = new Schema({
 // Store Messages like this.
 
 export interface User extends Document{
-    userName: string;
+    username: string;
     email: string;
     password: string;
     verifyCode: string;
@@ -45,7 +45,7 @@ export interface User extends Document{
     messages: Message[];
 }
 const UserSchema: Schema<User> = new Schema({
-    userName: {
+    username: {
         type: String,
         required : [true, "Username is required"],
         trim: true,
